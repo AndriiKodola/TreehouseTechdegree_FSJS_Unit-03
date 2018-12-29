@@ -248,7 +248,7 @@ $('form').on('submit', function(e) {
         inputMail = document.getElementById('mail'),
         inputMailValue = inputMail.value,
         fieldsetActivities = document.querySelector('fieldset.activities'),
-        checkboxListActivities = fieldsetActivities.querySelectorAll('option'),
+        checkboxListActivities = fieldsetActivities.querySelectorAll('label input'),
         inputCCNum = document.getElementById('cc-num'),
         inputCCNumValue = inputCCNum.value,
         inputZip = document.getElementById('zip'),
@@ -257,15 +257,20 @@ $('form').on('submit', function(e) {
         inputCVVValue = inputCVV.value;
 
 //input validators
-  let usernameIsValid = /^\w+$/.test(inputName),
-      emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/.test(inputMail),
+  let usernameIsValid = /^\w+$/.test(inputNameValue),
+      emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/.test(inputMailValue),
       ccNumIsValid = /^\d{13,16}$/.test(inputCCNumValue),
       zipIsValid = /^\d{5}$/.test(inputZipValue),
       cvvIsValid = /^\d{3}$/.test(inputCVVValue),
-      activityIsChosen = false || checkboxListActivities.forEach(function(activity) { //returns true if one of elements in chosen or defined as false otherwise
-        if (!activity.checked) { continue; }
-        return true;
-      });
+      activityIsChosen = false;// || checkboxListActivities.forEach(function(activity) { //returns true if one of elements in chosen or defined as false otherwise
+      //   if (!activity.checked) { continue; }
+      //   return true;
+      // }); //Commented, because doesn't work in Firefox
+      for (let i = 0; i<checkboxListActivities.length; i++) {
+        if (checkboxListActivities[i].checked) {
+          activityIsChosen = true;
+        }
+      }
 
 //reseting error messages and input field styles during each submission
   $invalidNameMessage.hide(500);
@@ -278,22 +283,23 @@ $('form').on('submit', function(e) {
   inputZip.style.borderColor = '#c1deeb';
   inputCVV.style.borderColor = '#c1deeb';
 
+//Prevents form from submission, shows error message and corresponding input field
+  const showInvalidInputState = (inputNode, invalidInputMessageNode) => {
+    e.preventDefault();
+    invalidInputMessageNode.show(500);
+    inputNode.style.borderColor = '#dc143c';
+  };
+
 //vaildating users input and showing necessary messages
   if (inputNameValue === "") {
-    e.preventDefault();
     $invalidNameMessage.text('Please, enter your name.');
-    $invalidNameMessage.show(500);
-    inputName.style.borderColor = '#dc143c';
+    showInvalidInputState(inputName, $invalidNameMessage);
   } else if (!usernameIsValid) {//Exceeds: Checks for validity of user name in addition to if it's blank.
-    e.preventDefault();
     $invalidNameMessage.text('User name can contain letters and numbers only.');
-    $invalidNameMessage.show(500);
-    inputName.style.borderColor = '#dc143c';
+    showInvalidInputState(inputName, $invalidNameMessage);
   }
   if (!emailIsValid) {
-    e.preventDefault();
-    $invalidMailMessage.show(500);
-    inputMail.style.borderColor = '#dc143c';
+    showInvalidInputState(inputMail, $invalidMailMessage);
   }
   if (!activityIsChosen) {
     e.preventDefault();
@@ -302,19 +308,13 @@ $('form').on('submit', function(e) {
 
   if ($('#payment option:selected').val() === 'credit card') {//only if credit card option is selected
     if (!ccNumIsValid) {
-      e.preventDefault();
-      $invalidCreditCard.show(500);
-      inputCCNum.style.borderColor = '#dc143c';
+      showInvalidInputState(inputCCNum, $invalidCreditCard);
     }
     if (!zipIsValid) {
-      e.preventDefault();
-      $invalidCreditCard.show(500);
-      inputZip.style.borderColor = '#dc143c';
+      showInvalidInputState(inputZip, $invalidCreditCard);
     }
     if (!cvvIsValid) {
-      e.preventDefault();
-      $invalidCreditCard.show(500);
-      inputCVV.style.borderColor = '#dc143c';
+      showInvalidInputState(inputCVV, $invalidCreditCard);
     }
   }
 });
