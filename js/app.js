@@ -170,15 +170,9 @@ const createInvalidInputMessageNode = (messageText) => {
   const  $invalidInputMessage = $('<span>');
   $invalidInputMessage.text(`${messageText}`);
   $invalidInputMessage
-    .css('display', 'inline-block')
-    .css('font-size', '1rem')
-    .css('font-weight', 'normal')
-    .css('color', '#228B22')
-    .css('padding', '0 .5em')
-    .css('margin', '0 .5em')
     .css('border', '1px solid #228B22')
-    .css('border-radius', '10px')
-    .css('color', '#228B22');
+    .css('border-radius', '10px');
+  $invalidInputMessage.addClass('pop-up');
 
   return $invalidInputMessage;
 };
@@ -188,17 +182,10 @@ const createInputTipMessageNode = (messageText) => {
   const  $InputTipMessage = $('<span>');
   $InputTipMessage.text(`${messageText}`);
   $InputTipMessage
-    .css('display', 'inline-block')
     .css('background', '#F0F8FF')
-    .css('font-size', '1rem')
-    .css('font-weight', 'normal')
-    .css('color', '#228B22')
-    .css('padding', '0 .5em')
-    .css('margin', '0 .5em')
     .css('border', '2px solid #228B22')
-    .css('border-radius', '0 20px 20px 0')
-    .css('color', '#228B22');
-  $InputTipMessage.addClass('tip');
+    .css('border-radius', '0 20px 20px 0');
+  $InputTipMessage.addClass('pop-up tip');
 
   return $InputTipMessage;
 };

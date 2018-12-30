@@ -153,6 +153,15 @@ button:hover {
   Tip message styles
 ==================================== */
 
+.pop-up {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: normal;
+  color: #228B22;
+  padding: 0 .5em;
+  margin: 0 .5em;
+}
+
 div .col-6 {
   position: relative;
 }
